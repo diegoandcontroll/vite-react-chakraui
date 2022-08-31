@@ -1,11 +1,12 @@
-import { Grid, GridItem } from '@chakra-ui/react';
+import { Box, Heading, useColorModeValue } from '@chakra-ui/react';
+
 function App() {
+  const bg = useColorModeValue('white', 'pink.500');
+  const bgVariant = useColorModeValue('white', 'green.200');
   return (
-    <Grid templateColumns='repeat(5, 1fr)' gap={6} mt={6}>
-      <GridItem w='100%' h='10' bg='purple.900' />
-      <GridItem w='100%' h='10' bg='purple.700' />
-      <GridItem w='100%' h='10' bg='purple.500' />
-    </Grid>
+    <Box w='100%' h={96} bgGradient={`linear(to-r, ${bgVariant}, ${bg})`} pl={12} pr={12}>
+      <Heading>Hellow World</Heading>
+    </Box>
   );
 }
 

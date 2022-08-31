@@ -21,6 +21,7 @@
   "rules": {
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
+    "react-hooks/rules-of-hooks": "off",
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {
@@ -29,8 +30,6 @@
         "caughtErrorsIgnorePattern": "^_"
       }
     ],
-
-    "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
 
     "prettier/prettier": [
