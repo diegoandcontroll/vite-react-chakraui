@@ -1,11 +1,24 @@
-import { Box, Heading, useColorModeValue } from '@chakra-ui/react';
+import { Box, Heading, HStack, Spinner, VStack } from '@chakra-ui/react';
+import { useUsersQuery } from './generated/graphql';
 
 function App() {
-  const bg = useColorModeValue('white', 'pink.500');
-  const bgVariant = useColorModeValue('white', 'green.200');
+  const { data, loading, error } = useUsersQuery();
+  if (loading) {
+    return <Spinner />;
+  }
+  if (error) {
+    return <p>Error</p>;
+  }
   return (
-    <Box w='100%' h={96} bgGradient={`linear(to-r, ${bgVariant}, ${bg})`} pl={12} pr={12}>
-      <Heading>Hellow World</Heading>
+    <Box display='flex' justifyContent='center' alignItems='center' mt={36}>
+      <VStack>
+        {data?.users.map((user) => (
+          <>
+            <Heading key={user.id}>{user.name}</Heading>
+            <Heading>{user.email}</Heading>
+          </>
+        ))}
+      </VStack>
     </Box>
   );
 }
