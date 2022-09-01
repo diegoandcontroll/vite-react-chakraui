@@ -7,11 +7,18 @@ import App from './App';
 import { theme } from './styles/theme';
 import { Header } from './components/Header';
 
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+const client = new ApolloClient({
+  uri: 'http://localhost:5000/graphql',
+  cache: new InMemoryCache(),
+});
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ChakraProvider theme={theme}>
-      <Header />
-      <App />
-    </ChakraProvider>
+    <ApolloProvider client={client}>
+      <ChakraProvider theme={theme}>
+        <Header />
+        <App />
+      </ChakraProvider>
+    </ApolloProvider>
   </React.StrictMode>,
 );
