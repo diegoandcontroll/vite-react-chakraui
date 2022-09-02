@@ -34,8 +34,8 @@ export const Pricing = () => {
     );
   };
   return (
-    <Flex bg='#edf3f8' _dark={{ bg: '#3e3e3e' }} alignItems='center' justifyContent='center'>
-      <Box py='64px' px='10' bg='gray.100' _dark={{ bg: 'gray.700' }} w='100%'>
+    <Flex bg='gray.400' _dark={{ bg: '#3e3e3e' }} alignItems='center' justifyContent='center'>
+      <Box py='64px' px='10' bg='gray.400' _dark={{ bg: 'gray.700' }} w='100%'>
         <Box w='full' px={[10, 4]} mx='auto' textAlign='center'>
           <Text mb={2} fontSize='5xl' fontWeight='bold' lineHeight='tight'>
             Plans & Pricing
@@ -77,7 +77,7 @@ export const Pricing = () => {
             <Box
               rounded={['none', 'lg']}
               shadow={['none', 'md']}
-              bg='white'
+              bg='gray.200'
               _dark={{ bg: 'gray.800' }}
             >
               <Flex
@@ -157,7 +157,7 @@ export const Pricing = () => {
             <Box
               rounded={['none', 'lg']}
               shadow={['none', 'md']}
-              bg='white'
+              bg='gray.200'
               _dark={{ bg: 'gray.800' }}
             >
               <Flex
@@ -234,7 +234,7 @@ export const Pricing = () => {
             <Box
               rounded={['none', 'lg']}
               shadow={['none', 'md']}
-              bg='white'
+              bg='gray.200'
               _dark={{ bg: 'gray.800' }}
             >
               <Flex
