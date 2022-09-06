@@ -8,9 +8,67 @@ import {
   SimpleGrid,
   VisuallyHidden,
   Input,
+  Spinner,
 } from '@chakra-ui/react';
+import { useState } from 'react';
+import { useToast } from '@chakra-ui/react';
+import { useCreateUserMutation } from '~/generated/graphql';
+import { RouteComponentProps } from 'react-router-dom';
 
-export const SignUp = () => {
+export const SignUp = ({ history }: RouteComponentProps) => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [photoUrl, setPhotoUrl] = useState('');
+  const [createUser] = useCreateUserMutation();
+  const [loading, setLoading] = useState(false);
+  const toast = useToast();
+
+  const handleSubmit = async (e: Event) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const response = await createUser({
+        variables: {
+          data: {
+            email,
+            password,
+            photoUrl,
+            name,
+          },
+        },
+      });
+
+      if (response.data?.createUser) {
+        setLoading(false);
+        toast({
+          title: 'Account created.',
+          description: 'Check to email to confirmation login',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+        history.push('/');
+      } else {
+        toast({
+          title: 'Error to create account',
+          description: 'Try again later',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+        console.log(response.errors?.map((err) => err.message));
+      }
+    } catch (e) {
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+    setName('');
+    setEmail('');
+    setPassword('');
+    setPhotoUrl('');
+  };
   return (
     <Box px={8} py={24} mx='auto' _dark={{ bg: 'gray.700' }} bg='gray.400'>
       <SimpleGrid
@@ -88,6 +146,7 @@ export const SignUp = () => {
         >
           <Box
             as='form'
+            onSubmit={(e: any) => handleSubmit(e)}
             mb={6}
             rounded='lg'
             shadow='xl'
@@ -131,6 +190,8 @@ export const SignUp = () => {
                   mt={0}
                   type='text'
                   placeholder='First Name'
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   border='1px solid'
                   borderColor='gray.400'
                   color='black'
@@ -145,6 +206,8 @@ export const SignUp = () => {
                   mt={0}
                   type='email'
                   placeholder='Email Address'
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   border='1px solid'
                   borderColor='gray.400'
                   color='black'
@@ -157,8 +220,10 @@ export const SignUp = () => {
                 <VisuallyHidden>Confirm Email Address</VisuallyHidden>
                 <Input
                   mt={0}
-                  type='email'
-                  placeholder='Confirm Email Address'
+                  type='text'
+                  placeholder='Photo Url Link'
+                  value={photoUrl}
+                  onChange={(e) => setPhotoUrl(e.target.value)}
                   border='1px solid'
                   borderColor='gray.400'
                   color='black'
@@ -173,6 +238,8 @@ export const SignUp = () => {
                   mt={0}
                   type='password'
                   placeholder='Password'
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   color='black'
                   _dark={{
                     color: 'white',
@@ -181,37 +248,29 @@ export const SignUp = () => {
                   borderColor='gray.400'
                 />
               </Flex>
-              <Flex>
-                <VisuallyHidden>Confirm Password</VisuallyHidden>
-                <Input
-                  mt={0}
-                  type='password'
-                  placeholder='Password'
+              {loading ? (
+                <Box display='flex' justifyContent='center' alignItems='center'>
+                  <Spinner />
+                </Box>
+              ) : (
+                <Button
+                  colorScheme='brand'
+                  bg='gray.400'
+                  w='full'
+                  py={2}
+                  type='submit'
                   color='black'
                   _dark={{
-                    color: 'white',
+                    bg: 'gray.300',
                   }}
-                  border='1px solid'
-                  borderColor='gray.400'
-                />
-              </Flex>
-              <Button
-                colorScheme='brand'
-                bg='gray.400'
-                w='full'
-                py={2}
-                type='submit'
-                color='black'
-                _dark={{
-                  bg: 'gray.300',
-                }}
-                _hover={{
-                  bg: 'gray.600',
-                  _dark: { bg: 'gray.500' },
-                }}
-              >
-                Sign up
-              </Button>
+                  _hover={{
+                    bg: 'gray.600',
+                    _dark: { bg: 'gray.500' },
+                  }}
+                >
+                  Sign up
+                </Button>
+              )}
             </SimpleGrid>
           </Box>
           <chakra.p fontSize='xs' textAlign='center' color='white'>

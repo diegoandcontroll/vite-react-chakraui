@@ -16,15 +16,23 @@ import {
 } from '@chakra-ui/react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { FaMoon, FaSun } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import LogoImg from '../../assets/logo.svg';
+import Cookies from 'universal-cookie';
+
 export function Header() {
   const bg = useColorModeValue('gray.100', 'gray.800');
   const text = useColorModeValue('dark', 'light');
   const SwitchIcon = useColorModeValue(FaMoon, FaSun);
   const { toggleColorMode: toggleMode } = useColorMode();
   const mobileNav = useDisclosure();
-
+  const cookies = new Cookies();
+  const history = useHistory();
+  function removeCookie() {
+    cookies.remove('auth.token', { maxAge: 0, path: '' });
+    history.push('/sign-in');
+    history.goBack();
+  }
   return (
     <React.Fragment>
       <chakra.header
@@ -73,15 +81,26 @@ export function Header() {
               <Link to='/about'>
                 <Button variant='ghost'>About</Button>
               </Link>
+
               <Link to='/pricing'>
                 <Button variant='ghost'>Pricing</Button>
               </Link>
+
               <Link to='/sign-up'>
                 <Button variant='ghost'>Sign up</Button>
               </Link>
-              <Link to='sign-in'>
+
+              <Link to='/sign-in'>
                 <Button variant='ghost'>Sign in</Button>
               </Link>
+
+              <Link to='/profile'>
+                <Button variant='ghost'>Profile</Button>
+              </Link>
+
+              <Button variant='ghost' onClick={removeCookie}>
+                Sign out
+              </Button>
             </HStack>
 
             <Box
