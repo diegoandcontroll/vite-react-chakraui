@@ -1,6 +1,26 @@
 import { chakra, Flex, SimpleGrid, Image, Button, Input, FormLabel } from '@chakra-ui/react';
 
-export const SignIn = () => {
+import { useState } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
+import { useAuth } from '~/hooks/authContext';
+
+export const SignIn = ({ history }: RouteComponentProps) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { signIn } = useAuth();
+
+  const handleSubmit = async (e: Event) => {
+    e.preventDefault();
+    try {
+      await signIn({
+        emailData: email,
+        password,
+      });
+      history.push('/');
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <SimpleGrid
       columns={{
@@ -25,9 +45,11 @@ export const SignIn = () => {
           zIndex={-99999}
         />
       </Flex>
-      <Flex
+      <chakra.form
+        onSubmit={(e: any) => handleSubmit(e)}
         as='form'
-        direction='column'
+        display='flex'
+        flexDirection='column'
         alignItems='center'
         justifyContent='center'
         w='full'
@@ -68,8 +90,10 @@ export const SignIn = () => {
           </FormLabel>
           <Input
             mt={-4}
-            type='text'
+            type='email'
             placeholder='E-mail'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             borderColor='gray.700'
             color='black'
             _dark={{
@@ -83,6 +107,8 @@ export const SignIn = () => {
           <Input
             mt={-4}
             type='password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             borderColor='gray.700'
             placeholder='Password'
             color='black'
@@ -111,7 +137,7 @@ export const SignIn = () => {
             Login now
           </Button>
         </SimpleGrid>
-      </Flex>
+      </chakra.form>
     </SimpleGrid>
   );
 };
