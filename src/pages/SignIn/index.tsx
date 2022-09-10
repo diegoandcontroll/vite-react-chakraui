@@ -1,10 +1,10 @@
 import { chakra, Flex, SimpleGrid, Image, Button, Input, FormLabel } from '@chakra-ui/react';
 
 import { useState } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+
 import { useAuth } from '~/hooks/authContext';
 
-export const SignIn = ({ history }: RouteComponentProps) => {
+export const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { signIn } = useAuth();
@@ -16,7 +16,7 @@ export const SignIn = ({ history }: RouteComponentProps) => {
         emailData: email,
         password,
       });
-      history.push('/');
+      //history.push('/profile');
     } catch (e) {
       console.log(e);
     }

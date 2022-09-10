@@ -2,33 +2,43 @@ import {
   Box,
   Flex,
   chakra,
-  Wrap,
   WrapItem,
   Avatar,
-  VStack,
   Spinner,
   HStack,
-  Heading,
+  Link,
+  Button,
 } from '@chakra-ui/react';
+import { useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import Cookies from 'universal-cookie';
+import { ModalUpdateProfile } from '~/components/Modal';
 import { useUserQuery } from '~/generated/graphql';
-import { useAuth } from '~/hooks/authContext';
 
 export const Profile = ({ history }: RouteComponentProps) => {
-  const { user } = useAuth();
+  const cookies = new Cookies();
+  const idUser = cookies.get('id.user');
+  const [typeModal, setTypeModal] = useState(false);
   const { data, error, loading } = useUserQuery({
     variables: {
-      id: user?.id,
+      id: idUser,
     },
+    fetchPolicy: 'network-only',
   });
 
   if (error) {
     console.log(error);
-    // history.push('/');
+    history.push('/');
+
     return <div>Error</div>;
   }
+  if (!data) {
+    return <div>No data</div>;
+  }
   if (loading) {
-    return <Spinner />;
+    <Box display='flex' justifyContent='center' alignItems='center'>
+      <Spinner />
+    </Box>;
   }
   return (
     <Flex
@@ -44,6 +54,7 @@ export const Profile = ({ history }: RouteComponentProps) => {
       <Box
         minW='7xl'
         px={4}
+        py={8}
         mx='auto'
         textAlign={{
           base: 'left',
@@ -65,17 +76,41 @@ export const Profile = ({ history }: RouteComponentProps) => {
             color: 'gray.700',
           }}
         >
-          <Box w={['full', '100%']} mx='auto'>
-            {/* <VStack spacing={8}>
-              {loading && (
-                <Box display='flex' justifyContent='center' alignItems='center'>
-                  <Spinner />
-                </Box>
-              )}
-            </VStack> */}
-            <Heading>Hellow {data.user?.name}</Heading>
+          <Box
+            w={['full', '100%']}
+            mx='auto'
+            display='flex'
+            justifyContent='center'
+            alignItems='center'
+          >
+            {loading && (
+              <Box display='flex' justifyContent='center' alignItems='center'>
+                <Spinner />
+              </Box>
+            )}
+            <HStack>
+              <WrapItem display='flex' justifyContent='center' alignItems='center' pr='5'>
+                <Avatar name={data.user.name} src={data.user.photoUrl} />
+              </WrapItem>
+              <Box
+                display='flex'
+                flexDirection='column'
+                justifyContent='center'
+                alignItems='center'
+              >
+                <chakra.h3 mr='28' ml='2'>
+                  Name: <chakra.span>{data.user?.name}</chakra.span>
+                </chakra.h3>
+                <chakra.h3>
+                  Email: <chakra.span>{data.user?.email}</chakra.span>
+                </chakra.h3>
+              </Box>
+            </HStack>
           </Box>
         </Box>
+
+        <ModalUpdateProfile />
+        <ModalUpdateProfile isChangePassword />
       </Box>
     </Flex>
   );
