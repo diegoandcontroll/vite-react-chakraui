@@ -13,9 +13,10 @@ import {
   CloseButton,
   useColorMode,
   Image,
+  Avatar,
 } from '@chakra-ui/react';
 import { AiOutlineMenu } from 'react-icons/ai';
-import { FaMoon, FaSun } from 'react-icons/fa';
+import { FaMoon, FaSignOutAlt, FaSun } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import LogoImg from '../../assets/logo.svg';
 import Cookies from 'universal-cookie';
@@ -28,6 +29,8 @@ export function Header() {
   const { toggleColorMode: toggleMode } = useColorMode();
   const mobileNav = useDisclosure();
   const cookies = new Cookies();
+  const photoUrl = window.localStorage.getItem('user.photoUrl');
+  const name = window.localStorage.getItem('user.name');
   function removeCookie() {
     cookies.remove('auth.token', { maxAge: 0, path: '' });
     cookies.remove('id.user', { maxAge: 0, path: '' });
@@ -80,6 +83,15 @@ export function Header() {
                 onClick={toggleMode}
                 icon={<SwitchIcon />}
               />
+              {isLogged && (
+                <Button variant='ghost' onClick={removeCookie}>
+                  <FaSignOutAlt />
+                </Button>
+              )}
+              <Link to='/'>
+                <Button variant='ghost'>Home</Button>
+              </Link>
+
               <Link to='/about'>
                 <Button variant='ghost'>About</Button>
               </Link>
@@ -103,16 +115,11 @@ export function Header() {
                   <Button variant='ghost'>Sign in</Button>
                 </Link>
               )}
-              {isLogged && (
-                <Link to='/profile'>
-                  <Button variant='ghost'>Profile</Button>
-                </Link>
-              )}
 
               {isLogged && (
-                <Button variant='ghost' onClick={removeCookie}>
-                  Sign out
-                </Button>
+                <Link to='/profile'>
+                  <Avatar src={photoUrl} name={name} />
+                </Link>
               )}
             </HStack>
 

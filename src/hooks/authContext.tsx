@@ -79,23 +79,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         },
       },
     });
-    console.log(response);
-    // const response = await updateUserMutation({
-    //   variables: {
-    //     id: data.id,
-    //     data: {
-    //       name: data?.name,
-    //       password: data?.password,
-    //       photoUrl: data?.photoUrl,
-    //     },
-    //   },
-    // });
-    // window.localStorage.setItem('user.name', response.data.updateUser.name.toString());
-    // window.localStorage.setItem('user.photoUrl', response.data.updateUser.photoUrl.toString());
-    // if (response.errors) {
-    //   console.log(response.errors);
-    // }
-    // console.log(response);
+    window.localStorage.setItem('user.photoUrl', response.data.updateUser.photoUrl.toString());
+    window.localStorage.setItem('user.name', response.data.updateUser.name.toString());
   }
 
   return (

@@ -1,15 +1,5 @@
-import {
-  Box,
-  Flex,
-  chakra,
-  WrapItem,
-  Avatar,
-  Spinner,
-  HStack,
-  Link,
-  Button,
-} from '@chakra-ui/react';
-import { useState } from 'react';
+import { Box, Flex, chakra, WrapItem, Avatar, Spinner, HStack } from '@chakra-ui/react';
+
 import { RouteComponentProps } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { ModalUpdateProfile } from '~/components/Modal';
@@ -18,7 +8,7 @@ import { useUserQuery } from '~/generated/graphql';
 export const Profile = ({ history }: RouteComponentProps) => {
   const cookies = new Cookies();
   const idUser = cookies.get('id.user');
-  const [typeModal, setTypeModal] = useState(false);
+
   const { data, error, loading } = useUserQuery({
     variables: {
       id: idUser,
