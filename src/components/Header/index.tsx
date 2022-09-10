@@ -35,8 +35,10 @@ export function Header() {
     cookies.remove('auth.token', { maxAge: 0, path: '' });
     cookies.remove('id.user', { maxAge: 0, path: '' });
     window.localStorage.removeItem('user.photoUrl');
+    window.localStorage.removeItem('user.email');
     window.localStorage.removeItem('user.name');
-    window.location.href = '/sign-in';
+    window.localStorage.removeItem('user.id');
+    window.location.href = '/';
   }
   return (
     <React.Fragment>

@@ -1,3 +1,4 @@
+let error;
 function getCookie(name: string) {
   const nameEQ = name + '=';
   const ca = document.cookie.split(';');
@@ -15,4 +16,11 @@ export const isLogged = !!token;
 
 export function setLocalStorage(keys: string[], values: string[]) {
   keys.map((key) => values.map((value) => window.localStorage.setItem(key, value)));
+}
+
+export function setError(value: boolean) {
+  error = value;
+}
+export function getError() {
+  return error;
 }
