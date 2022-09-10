@@ -8,7 +8,6 @@ export const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { signIn } = useAuth();
-
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
     try {
@@ -16,7 +15,7 @@ export const SignIn = () => {
         emailData: email,
         password,
       });
-      //history.push('/profile');
+      window.location.href = '/profile';
     } catch (e) {
       console.log(e);
     }

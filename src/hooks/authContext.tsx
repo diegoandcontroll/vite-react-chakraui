@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { useLoginMutation, useUpdateUserMutation } from '~/generated/graphql';
 import Cookies from 'universal-cookie';
 
@@ -26,19 +26,31 @@ type DataUpdateUser = {
 
 type AuthContextData = {
   signIn(data: Data): Promise<void>;
-  handleUpdate(data: DataUpdateUser): Promise<void>;
   isAuthenticated: boolean;
   user: User | undefined;
+  handleUpdate(data: DataUpdateUser): Promise<void>;
+  signOut: () => void;
 };
-
+export const signOut = () => {
+  cookies.remove('auth.token', { maxAge: 0, path: '' });
+  cookies.remove('id.user', { maxAge: 0, path: '' });
+};
 const AuthContext = createContext({} as AuthContextData);
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User>(null);
+
   const isAuthenticated = !!user;
   const [login] = useLoginMutation();
   const [updateUser] = useUpdateUserMutation();
-
+  useEffect(() => {
+    setUser({
+      id: window.localStorage.getItem('user.id'),
+      email: window.localStorage.getItem('user.email'),
+      name: window.localStorage.getItem('user.name'),
+      photoUrl: window.localStorage.getItem('user.photoUrl'),
+    });
+  }, []);
   async function signIn({ emailData, password }: Data) {
     try {
       const response = await login({
@@ -53,16 +65,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const { id, photoUrl, name, email } = response.data.login.user;
       const token = response.data.login.token;
       cookies.set('auth.token', token, { path: '/', maxAge: 60 * 60 * 24 * 30 });
+      cookies.set('id.user', id, { path: '/', maxAge: 60 * 60 * 24 * 30 });
       window.localStorage.setItem('user.name', name.toString());
       window.localStorage.setItem('user.photoUrl', photoUrl.toString());
-      cookies.set('id.user', id, { path: '/', maxAge: 60 * 60 * 24 * 30 });
+      window.localStorage.setItem('user.id', id.toString());
+      window.localStorage.setItem('user.email', email.toString());
       setUser({
         id: id,
         name: name,
         email: email,
         photoUrl: photoUrl,
       });
-      window.location.href = '/profile';
+
+      // window.location.href = '/profile';
     } catch (error) {
       console.log(error);
     }
@@ -79,12 +94,21 @@ export function AuthProvider({ children }: AuthProviderProps) {
         },
       },
     });
+    const { id, photoUrl, name, email } = response.data.updateUser;
+    setUser({
+      id: id,
+      name: name,
+      email: email,
+      photoUrl: photoUrl,
+    });
     window.localStorage.setItem('user.photoUrl', response.data.updateUser.photoUrl.toString());
     window.localStorage.setItem('user.name', response.data.updateUser.name.toString());
+    window.localStorage.setItem('user.name', name.toString());
+    window.localStorage.setItem('user.photoUrl', photoUrl.toString());
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, signIn, user, handleUpdate }}>
+    <AuthContext.Provider value={{ isAuthenticated, signIn, user, handleUpdate, signOut }}>
       {children}
     </AuthContext.Provider>
   );

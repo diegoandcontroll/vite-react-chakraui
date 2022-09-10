@@ -8,7 +8,6 @@ import { useUserQuery } from '~/generated/graphql';
 export const Profile = ({ history }: RouteComponentProps) => {
   const cookies = new Cookies();
   const idUser = cookies.get('id.user');
-
   const { data, error, loading } = useUserQuery({
     variables: {
       id: idUser,
@@ -78,6 +77,7 @@ export const Profile = ({ history }: RouteComponentProps) => {
                 <Spinner />
               </Box>
             )}
+
             <HStack>
               <WrapItem display='flex' justifyContent='center' alignItems='center' pr='5'>
                 <Avatar name={data.user.name} src={data.user.photoUrl} />

@@ -11,6 +11,7 @@ export const Home = () => {
   const [pageNumber, setPageNumber] = useState(0);
   const moviesPerPage = 3;
   const pagesVisited = pageNumber * moviesPerPage;
+
   const displayMovies = data?.users
     .slice(pagesVisited, pagesVisited + moviesPerPage)
     .map((user) => (
@@ -18,7 +19,7 @@ export const Home = () => {
         <Card email={user?.email} name={user?.name} img={user?.photoUrl} />
       </GridItem>
     ));
-  const pageCount = Math.ceil(data?.users.length / moviesPerPage);
+  const pageCount = Math.floor(data?.users.length / moviesPerPage);
   const changePage = ({ selected }: any) => {
     setPageNumber(selected);
   };
@@ -60,7 +61,7 @@ export const Home = () => {
           <ReactPaginate
             previousLabel={'🡰'}
             nextLabel={'🡲'}
-            pageCount={pageCount}
+            pageCount={Number(pageCount)}
             onPageChange={changePage}
             containerClassName={'paginationBttns'}
             previousLinkClassName={'previousBttn'}
