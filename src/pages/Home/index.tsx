@@ -8,16 +8,13 @@ import {
   VStack,
   Spinner,
   HStack,
-  Heading,
 } from '@chakra-ui/react';
+
 import { useUsersQuery } from '~/generated/graphql';
-import { useAuth } from '~/hooks/authContext';
-import { token } from '~/utils/cookies';
 
 export const Home = () => {
-  const { user } = useAuth();
   const { data, loading } = useUsersQuery({ fetchPolicy: 'network-only' });
-  console.log(token);
+
   return (
     <Flex
       w='full'
@@ -60,6 +57,7 @@ export const Home = () => {
                   <Spinner />
                 </Box>
               )}
+
               {data &&
                 data.users.map((user) => (
                   <Wrap key={user.id} minW='448'>

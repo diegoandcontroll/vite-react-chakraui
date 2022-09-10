@@ -16,9 +16,10 @@ import {
 } from '@chakra-ui/react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { FaMoon, FaSun } from 'react-icons/fa';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import LogoImg from '../../assets/logo.svg';
 import Cookies from 'universal-cookie';
+import { isLogged } from '~/utils/cookies';
 
 export function Header() {
   const bg = useColorModeValue('gray.100', 'gray.800');
@@ -27,11 +28,12 @@ export function Header() {
   const { toggleColorMode: toggleMode } = useColorMode();
   const mobileNav = useDisclosure();
   const cookies = new Cookies();
-  const history = useHistory();
   function removeCookie() {
     cookies.remove('auth.token', { maxAge: 0, path: '' });
-    history.push('/sign-in');
-    history.goBack();
+    cookies.remove('id.user', { maxAge: 0, path: '' });
+    window.localStorage.removeItem('user.photoUrl');
+    window.localStorage.removeItem('user.name');
+    window.location.href = '/sign-in';
   }
   return (
     <React.Fragment>
@@ -86,21 +88,32 @@ export function Header() {
                 <Button variant='ghost'>Pricing</Button>
               </Link>
 
-              <Link to='/sign-up'>
-                <Button variant='ghost'>Sign up</Button>
-              </Link>
+              {isLogged ? (
+                ''
+              ) : (
+                <Link to='/sign-up'>
+                  <Button variant='ghost'>Sign up</Button>
+                </Link>
+              )}
 
-              <Link to='/sign-in'>
-                <Button variant='ghost'>Sign in</Button>
-              </Link>
+              {isLogged ? (
+                ''
+              ) : (
+                <Link to='/sign-in'>
+                  <Button variant='ghost'>Sign in</Button>
+                </Link>
+              )}
+              {isLogged && (
+                <Link to='/profile'>
+                  <Button variant='ghost'>Profile</Button>
+                </Link>
+              )}
 
-              <Link to='/profile'>
-                <Button variant='ghost'>Profile</Button>
-              </Link>
-
-              <Button variant='ghost' onClick={removeCookie}>
-                Sign out
-              </Button>
+              {isLogged && (
+                <Button variant='ghost' onClick={removeCookie}>
+                  Sign out
+                </Button>
+              )}
             </HStack>
 
             <Box

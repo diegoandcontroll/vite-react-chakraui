@@ -10,3 +10,9 @@ function getCookie(name: string) {
 }
 
 export const token = getCookie('auth.token');
+
+export const isLogged = !!token;
+
+export function setLocalStorage(keys: string[], values: string[]) {
+  keys.map((key) => values.map((value) => window.localStorage.setItem(key, value)));
+}
