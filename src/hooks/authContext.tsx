@@ -1,5 +1,9 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import { useLoginMutation, useUpdateUserMutation } from '~/generated/graphql';
+import {
+  useLoginMutation,
+  useRefreshTokenMutation,
+  useUpdateUserMutation,
+} from '~/generated/graphql';
 import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
@@ -30,6 +34,7 @@ type AuthContextData = {
   user: User | undefined;
   handleUpdate(data: DataUpdateUser): Promise<void>;
   signOut: () => void;
+  refreshToken(oldToken: string): Promise<void>;
 };
 export const signOut = () => {
   cookies.remove('auth.token', { maxAge: 0, path: '' });
@@ -64,12 +69,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       });
       const { id, photoUrl, name, email } = response.data.login.user;
       const token = response.data.login.token;
-      cookies.set('auth.token', token, { path: '/', maxAge: 60 * 60 * 24 * 30 });
+      cookies.set('auth.token', token || '', { path: '/', maxAge: 60 * 60 * 24 * 30 });
       cookies.set('id.user', id, { path: '/', maxAge: 60 * 60 * 24 * 30 });
-      window.localStorage.setItem('user.name', name.toString());
-      window.localStorage.setItem('user.photoUrl', photoUrl.toString());
-      window.localStorage.setItem('user.id', id.toString());
-      window.localStorage.setItem('user.email', email.toString());
+
       setUser({
         id: id,
         name: name,
@@ -106,9 +108,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
     window.localStorage.setItem('user.name', name.toString());
     window.localStorage.setItem('user.photoUrl', photoUrl.toString());
   }
+  async function refreshToken(oldToken: string) {
+    const [refreshToken] = useRefreshTokenMutation();
 
+    const response = await refreshToken({
+      variables: {
+        oldToken: oldToken,
+      },
+    });
+    cookies.set('auth.token', response.data.refreshToken.token || '');
+  }
   return (
-    <AuthContext.Provider value={{ isAuthenticated, signIn, user, handleUpdate, signOut }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, signIn, user, handleUpdate, signOut, refreshToken }}
+    >
       {children}
     </AuthContext.Provider>
   );

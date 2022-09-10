@@ -115,11 +115,7 @@ export type RefreshTokenMutationVariables = Exact<{
 
 export type RefreshTokenMutation = {
   __typename?: 'Mutation';
-  refreshToken: {
-    __typename?: 'AuthType';
-    token: string;
-    user: { __typename?: 'User'; id: string; name: string; email: string; photoUrl: string };
-  };
+  refreshToken: { __typename?: 'AuthType'; token: string };
 };
 
 export type CreateUserMutationVariables = Exact<{
@@ -228,12 +224,6 @@ export type LoginMutationOptions = Apollo.BaseMutationOptions<
 export const RefreshTokenDocument = gql`
   mutation RefreshToken($oldToken: String!) {
     refreshToken(oldToken: $oldToken) {
-      user {
-        id
-        name
-        email
-        photoUrl
-      }
       token
     }
   }

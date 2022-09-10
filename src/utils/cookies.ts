@@ -1,26 +1,13 @@
-let error;
-function getCookie(name: string) {
-  const nameEQ = name + '=';
-  const ca = document.cookie.split(';');
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-  }
-  return null;
-}
+import { useCookies } from 'react-cookie';
 
-export const token = getCookie('auth.token');
+export const useAuthToken = () => {
+  const [cookies, setCookie, removeCookie] = useCookies(['auth.token']);
 
-export const isLogged = !!token;
+  // this function allows to save any string in our cookies, under the key "authToken"
+  const setAuthToken = (authToken: string) => setCookie('auth.token', authToken);
 
-export function setLocalStorage(keys: string[], values: string[]) {
-  keys.map((key) => values.map((value) => window.localStorage.setItem(key, value)));
-}
+  //this function removes the key "authToken" from our cookies. Useful to logout
+  const removeAuthToken = () => removeCookie('auth.token');
 
-export function setError(value: boolean) {
-  error = value;
-}
-export function getError() {
-  return error;
-}
+  return [cookies['auth.token'], setAuthToken, removeAuthToken];
+};

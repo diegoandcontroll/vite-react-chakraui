@@ -1,24 +1,29 @@
+/* eslint-disable no-useless-catch */
+/* eslint-disable no-case-declarations */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ChakraProvider } from '@chakra-ui/react';
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  ApolloLink,
+  createHttpLink,
+} from '@apollo/client';
 
-import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
 import App from './App';
 import { theme } from './styles/theme';
-
 import Cookies from 'universal-cookie';
-
 const cookies = new Cookies();
-
 import { AuthProvider } from './hooks/authContext';
+
 const httpLink = createHttpLink({
   uri: 'http://localhost:5000/graphql',
-  credentials: 'same-origin',
 });
-const authLink = setContext((_, { headers }) => {
-  const token = cookies.get('auth.token');
+const authLink = setContext((operation, { headers }) => {
+  const token: string = cookies.get('auth.token');
   return {
     headers: {
       ...headers,
@@ -28,7 +33,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: ApolloLink.from([authLink, httpLink]),
   cache: new InMemoryCache(),
 });
 ReactDOM.createRoot(document.getElementById('root')!).render(
