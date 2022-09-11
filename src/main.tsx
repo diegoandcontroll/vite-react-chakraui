@@ -31,13 +31,13 @@ const authLink = setContext((_, { headers }) => {
     },
   };
 });
-const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
+const errorLink = onError(({ graphQLErrors, operation, forward }) => {
   if (graphQLErrors) {
     for (const err of graphQLErrors) {
       switch (err.extensions.code) {
         case 'UNAUTHENTICATED':
           return fromPromise(
-            getNewToken().catch((error) => {
+            getNewToken().catch(() => {
               return;
             }),
           )

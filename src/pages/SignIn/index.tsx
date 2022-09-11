@@ -1,4 +1,4 @@
-import { chakra, Flex, SimpleGrid, Image, Button, Input, FormLabel } from '@chakra-ui/react';
+import { chakra, SimpleGrid, Button, Input, FormLabel } from '@chakra-ui/react';
 
 import { useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
