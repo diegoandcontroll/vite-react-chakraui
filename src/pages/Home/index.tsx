@@ -5,10 +5,9 @@ import ReactPaginate from 'react-paginate';
 import { Card } from '~/components/Card';
 import 'src/styles/pagination.css';
 import { useUsersQuery } from '~/generated/graphql';
-import { getIsLogged } from '~/utils/acesstoken';
 
 export const Home = () => {
-  const { data, loading } = useUsersQuery({ fetchPolicy: 'network-only' });
+  const { data, loading } = useUsersQuery({ fetchPolicy: 'cache-and-network' });
   const [pageNumber, setPageNumber] = useState(0);
   const moviesPerPage = 3;
   const pagesVisited = pageNumber * moviesPerPage;
@@ -23,7 +22,6 @@ export const Home = () => {
   const changePage = ({ selected }: any) => {
     setPageNumber(selected);
   };
-  console.log(getIsLogged());
   return (
     <Flex
       w='full'

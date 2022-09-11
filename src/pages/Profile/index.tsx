@@ -4,14 +4,18 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { ModalUpdateProfile } from '~/components/Modal';
 import { useUserQuery } from '~/generated/graphql';
+import { getItemLocalStorage } from '~/utils/localtorage';
 
 export const Profile = ({ history }: RouteComponentProps) => {
   const idUser = window.localStorage.getItem('id');
+  const name = getItemLocalStorage('name');
+  const email = getItemLocalStorage('email');
+  const photoUrl = getItemLocalStorage('photoUrl');
   const { data, error, loading } = useUserQuery({
     variables: {
       id: idUser,
     },
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'cache-and-network',
   });
 
   if (error) {
@@ -20,9 +24,9 @@ export const Profile = ({ history }: RouteComponentProps) => {
 
     return <div>Error</div>;
   }
-  if (!data) {
-    return <div>No data</div>;
-  }
+  // if (!data) {
+  //   return <div>No data</div>;
+  // }
   if (loading) {
     <Box display='flex' justifyContent='center' alignItems='center'>
       <Spinner />
@@ -71,15 +75,15 @@ export const Profile = ({ history }: RouteComponentProps) => {
             justifyContent='center'
             alignItems='center'
           >
-            {loading && (
+            {/* {loading && (
               <Box display='flex' justifyContent='center' alignItems='center'>
                 <Spinner />
               </Box>
-            )}
+            )} */}
 
             <HStack>
               <WrapItem display='flex' justifyContent='center' alignItems='center' pr='5'>
-                <Avatar name={data.user.name} src={data.user.photoUrl} />
+                <Avatar name={data?.user.name || name} src={data?.user.photoUrl || photoUrl} />
               </WrapItem>
               <Box
                 display='flex'
@@ -88,10 +92,10 @@ export const Profile = ({ history }: RouteComponentProps) => {
                 alignItems='center'
               >
                 <chakra.h3 mr='28' ml='2'>
-                  Name: <chakra.span>{data.user?.name}</chakra.span>
+                  Name: <chakra.span>{data?.user.name || name}</chakra.span>
                 </chakra.h3>
                 <chakra.h3>
-                  Email: <chakra.span>{data.user?.email}</chakra.span>
+                  Email: <chakra.span>{data?.user.email || email}</chakra.span>
                 </chakra.h3>
               </Box>
             </HStack>
