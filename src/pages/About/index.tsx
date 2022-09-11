@@ -6,9 +6,9 @@ export const About = () => {
       w='full'
       bg='gray.400'
       _dark={{
-        bg: 'gray.700',
+        bgGradient: 'linear(to-b, #fc45a9, #c64089, #6945fc)',
       }}
-      p={50}
+      py={24}
       alignItems='center'
       justifyContent='center'
     >
@@ -25,7 +25,6 @@ export const About = () => {
           bg: 'gray.700',
         }}
         rounded='md'
-        shadow='base'
       >
         <Box
           px={[0, 4]}

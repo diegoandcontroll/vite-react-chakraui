@@ -32,7 +32,7 @@ function App() {
           component={(props: RouteComponentProps) => <Profile {...props} />}
         />
       </Switch>
-      <Footer />
+      {/* <Footer /> */}
     </BrowserRouter>
   );
 }

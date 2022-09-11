@@ -10,7 +10,7 @@ type CardProps = {
 export const Card = ({ email, name, img }: CardProps) => {
   return (
     <Box
-      w='sm'
+      w={['60', 'sm']}
       mx='auto'
       bg='white'
       _dark={{ bg: 'gray.800' }}

@@ -1,11 +1,11 @@
-import { Box, Flex, chakra, WrapItem, Avatar, Spinner, HStack } from '@chakra-ui/react';
+import { Box, Flex, Spinner, Heading } from '@chakra-ui/react';
 
 import { RouteComponentProps } from 'react-router-dom';
 
 import { ModalUpdateProfile } from '~/components/Modal';
 import { useUserQuery } from '~/generated/graphql';
 import { getItemLocalStorage } from '~/utils/localtorage';
-
+import { CardProfile } from '~/components/CardProfile';
 export const Profile = ({ history }: RouteComponentProps) => {
   const idUser = window.localStorage.getItem('id');
   const name = getItemLocalStorage('name');
@@ -39,30 +39,24 @@ export const Profile = ({ history }: RouteComponentProps) => {
       _dark={{
         bg: 'gray.700',
       }}
-      p={50}
       alignItems='center'
       justifyContent='center'
+      flexDirection='column'
     >
+      <Heading mt={2}>Profile Page</Heading>
       <Box
-        minW='7xl'
+        minW={['', '1xl']}
         px={4}
-        py={8}
+        py={4}
         mx='auto'
         textAlign={{
           base: 'left',
           md: 'center',
         }}
-        bg='gray.200'
-        _dark={{
-          bg: 'gray.500',
-        }}
         rounded='md'
-        shadow='base'
       >
         <Box
           px={[0, 4]}
-          py={20}
-          borderWidth='1'
           color='gray.100'
           _dark={{
             color: 'gray.700',
@@ -74,14 +68,19 @@ export const Profile = ({ history }: RouteComponentProps) => {
             display='flex'
             justifyContent='center'
             alignItems='center'
+            py={8}
           >
             {/* {loading && (
               <Box display='flex' justifyContent='center' alignItems='center'>
                 <Spinner />
               </Box>
             )} */}
-
-            <HStack>
+            <CardProfile
+              email={email ? email : data.user.email}
+              name={name ? name : data.user.name}
+              photoUrl={photoUrl ? photoUrl : data.user.photoUrl}
+            />
+            {/* <HStack>
               <WrapItem display='flex' justifyContent='center' alignItems='center' pr='5'>
                 <Avatar name={data?.user.name || name} src={data?.user.photoUrl || photoUrl} />
               </WrapItem>
@@ -98,7 +97,7 @@ export const Profile = ({ history }: RouteComponentProps) => {
                   Email: <chakra.span>{data?.user.email || email}</chakra.span>
                 </chakra.h3>
               </Box>
-            </HStack>
+            </HStack> */}
           </Box>
         </Box>
 

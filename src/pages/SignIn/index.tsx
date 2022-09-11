@@ -52,26 +52,10 @@ export const SignIn = ({ history }: RouteComponentProps) => {
     <SimpleGrid
       columns={{
         base: 1,
-        md: 2,
+        md: 1,
       }}
-      gridTemplateColumns='38rem 2fr'
       spacing='0'
     >
-      <Flex order='2'>
-        <Image
-          src='https://img.freepik.com/free-vector/programmer-work-with-working-day-symbols-flat-illustration_1284-60322.jpg?w=2000'
-          alt='3 women looking at a laptop'
-          _dark={{
-            opacity: 0.7,
-          }}
-          w='full'
-          objectPosition='center'
-          loading='lazy'
-          objectFit='cover'
-          opacity='10'
-          zIndex={-99999}
-        />
-      </Flex>
       <chakra.form
         onSubmit={(e: any) => handleSubmit(e)}
         as='form'
@@ -80,9 +64,10 @@ export const SignIn = ({ history }: RouteComponentProps) => {
         alignItems='center'
         justifyContent='center'
         w='full'
+        py={32}
         zIndex={3}
         bg='gray.300'
-        _dark={{ bg: 'gray.700' }}
+        _dark={{ bgGradient: 'linear(to-b, #fc45a9, #c64089, #6945fc)' }}
       >
         <chakra.h1
           mb={4}
@@ -94,7 +79,7 @@ export const SignIn = ({ history }: RouteComponentProps) => {
           fontWeight='bold'
           color='brand.600'
           _dark={{
-            color: 'gray.300',
+            color: 'white',
           }}
           lineHeight='shorter'
           textShadow='2px 0 currentcolor'
@@ -152,13 +137,13 @@ export const SignIn = ({ history }: RouteComponentProps) => {
             my={2}
             type='submit'
             _dark={{
-              bg: 'gray.300',
+              bg: 'gray.200',
             }}
             border='1px solid'
             borderColor='gray.700'
             _hover={{
               bg: 'gray.500',
-              _dark: { bg: 'gray.500' },
+              _dark: { bg: 'gray.400' },
             }}
           >
             Login now
