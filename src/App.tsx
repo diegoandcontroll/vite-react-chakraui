@@ -7,6 +7,7 @@ import { Pricing } from './pages/Pricing';
 import { Profile } from './pages/Profile';
 import { SignIn } from './pages/SignIn';
 import { SignUp } from './pages/SignUp';
+
 function App() {
   return (
     <BrowserRouter>

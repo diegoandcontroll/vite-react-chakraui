@@ -19,26 +19,22 @@ import { AiOutlineMenu } from 'react-icons/ai';
 import { FaMoon, FaSignOutAlt, FaSun } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import LogoImg from '../../assets/logo.svg';
-import Cookies from 'universal-cookie';
-import { isLogged } from '~/utils/cookies';
 
+import { cookies } from '~/utils/cookies';
 export function Header() {
   const bg = useColorModeValue('gray.100', 'gray.800');
   const text = useColorModeValue('dark', 'light');
   const SwitchIcon = useColorModeValue(FaMoon, FaSun);
   const { toggleColorMode: toggleMode } = useColorMode();
   const mobileNav = useDisclosure();
-  const cookies = new Cookies();
-  const photoUrl = window.localStorage.getItem('user.photoUrl');
-  const name = window.localStorage.getItem('user.name');
+  const isLogged = !!cookies.get('auth.token');
+  const photoUrl = window.localStorage.getItem('photoUrl');
+  const name = window.localStorage.getItem('name');
+
   function removeCookie() {
-    cookies.remove('auth.token', { maxAge: 0, path: '' });
-    cookies.remove('id.user', { maxAge: 0, path: '' });
-    window.localStorage.removeItem('user.photoUrl');
-    window.localStorage.removeItem('user.email');
-    window.localStorage.removeItem('user.name');
-    window.localStorage.removeItem('user.id');
-    window.location.href = '/';
+    window.localStorage.clear();
+    cookies.remove('auth.token');
+    window.location.href = '/sign-in';
   }
   return (
     <React.Fragment>
@@ -85,10 +81,13 @@ export function Header() {
                 onClick={toggleMode}
                 icon={<SwitchIcon />}
               />
-              {isLogged && (
+
+              {isLogged ? (
                 <Button variant='ghost' onClick={removeCookie}>
                   <FaSignOutAlt />
                 </Button>
+              ) : (
+                ''
               )}
               <Link to='/'>
                 <Button variant='ghost'>Home</Button>

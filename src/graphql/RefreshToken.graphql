@@ -1,11 +1,5 @@
 mutation RefreshToken($oldToken: String!) {
   refreshToken(oldToken: $oldToken) {
-    user {
-      id
-      name
-      email
-      photoUrl
-    }
     token
   }
 }

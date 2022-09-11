@@ -12,6 +12,6 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['@apollo/client'],
+    include: ['@apollo/client', '@apollo/client/utilities', 'graphql', '@apollo/client/link/error'],
   },
 });

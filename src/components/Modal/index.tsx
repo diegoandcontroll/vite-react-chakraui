@@ -14,20 +14,19 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import Cookies from 'universal-cookie';
 import { useAuth } from '~/hooks/authContext';
 import { useHistory } from 'react-router-dom';
+import { getItemLocalStorage } from '~/utils/localtorage';
 type ModalProps = {
   isChangePassword?: boolean;
 };
 export const ModalUpdateProfile = ({ isChangePassword }: ModalProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const cookies = new Cookies();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
-  const idUser: string = cookies.get('id.user');
-  const nameLocalStorage: string = window.localStorage.getItem('user.name');
-  const photoUrlLocalStorage: string = window.localStorage.getItem('user.photoUrl');
+  const idUser: string = getItemLocalStorage('id');
+  const nameLocalStorage: string = window.localStorage.getItem('name');
+  const photoUrlLocalStorage: string = window.localStorage.getItem('photoUrl');
   const [nameState, setName] = useState(nameLocalStorage || '');
   const [photoUrlState, setPhotoUrl] = useState(photoUrlLocalStorage || '');
   const [passwordState, setPassword] = useState<string>('');
