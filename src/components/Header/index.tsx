@@ -19,7 +19,7 @@ import {
 import { AiOutlineMenu } from 'react-icons/ai';
 import { FaMoon, FaSignOutAlt, FaSun } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import LogoImg from '../../assets/logo.svg';
+import LogoImg from '../../assets/logo.png';
 
 import { cookies } from '~/utils/cookies';
 import { useUsersQuery } from '~/generated/graphql';
@@ -35,7 +35,7 @@ export function Header() {
   const idUser = window.localStorage.getItem('id');
   const { data } = useUsersQuery({ fetchPolicy: 'cache-and-network' });
   let photoUrlResponse: string;
-  data.users.map((item) => {
+  data?.users.map((item) => {
     if (item.id === idUser) {
       photoUrlResponse = item.photoUrl;
     }
@@ -61,9 +61,9 @@ export function Header() {
         <Flex alignItems='center' justifyContent='space-between' mx='auto'>
           <Flex>
             <Link to='/'>
-              <Box maxH={18} maxWidth={48} display='flex'>
+              <Box maxH={18} maxWidth={48} display='flex' px={18}>
                 <chakra.button title='Choc Home Page' display='flex' alignItems='center'>
-                  <Image src={LogoImg} w='36' h='28' objectFit='cover' />
+                  <Image src={LogoImg} w='12' h='12' objectFit='cover' />
                 </chakra.button>
               </Box>
             </Link>
@@ -129,7 +129,7 @@ export function Header() {
 
               {isLogged && (
                 <Link to='/profile'>
-                  <Avatar src={photoUrlResponse || photoUrl} name={name} />
+                  <Avatar src={photoUrlResponse || photoUrl} name={name} width={12} height={12} />
                 </Link>
               )}
             </HStack>

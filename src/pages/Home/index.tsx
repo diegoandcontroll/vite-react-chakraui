@@ -27,9 +27,9 @@ export const Home = () => {
       w='full'
       bg='gray.400'
       _dark={{
-        bg: 'gray.700',
+        bgGradient: 'linear(to-b, #fc45a9, #c64089, #6945fc)',
       }}
-      p={50}
+      py={8}
       alignItems='center'
       justifyContent='center'
       flexDirection='column'
@@ -38,7 +38,7 @@ export const Home = () => {
         _dark={{
           color: 'white',
         }}
-        py='4'
+        mb={4}
       >
         Users Registerd
       </Heading>
@@ -49,7 +49,7 @@ export const Home = () => {
             <Spinner />
           </Flex>
         ) : (
-          <Grid templateColumns='repeat(3, 1fr)' gap={6}>
+          <Grid templateColumns={['repeat(1fr)', 'repeat(3, 1fr)']} gap={6}>
             {displayMovies}
           </Grid>
         )}

@@ -70,7 +70,13 @@ export const SignUp = ({ history }: RouteComponentProps) => {
     setPhotoUrl('');
   };
   return (
-    <Box px={8} py={24} mx='auto' _dark={{ bg: 'gray.700' }} bg='gray.400'>
+    <Box
+      px={8}
+      py={24}
+      mx='auto'
+      _dark={{ bgGradient: 'linear(to-b, #fc45a9, #c64089, #6945fc)' }}
+      bg='gray.400'
+    >
       <SimpleGrid
         alignItems='center'
         w={{

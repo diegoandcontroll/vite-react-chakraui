@@ -35,12 +35,18 @@ export const Pricing = () => {
   };
   return (
     <Flex bg='gray.400' _dark={{ bg: '#3e3e3e' }} alignItems='center' justifyContent='center'>
-      <Box py='64px' px='10' bg='gray.400' _dark={{ bg: 'gray.700' }} w='100%'>
+      <Box
+        py='64px'
+        px='10'
+        bg='gray.400'
+        _dark={{ bgGradient: 'linear(to-b, #fc45a9, #c64089, #6945fc)' }}
+        w='100%'
+      >
         <Box w='full' px={[10, 4]} mx='auto' textAlign='center'>
           <Text mb={2} fontSize='5xl' fontWeight='bold' lineHeight='tight'>
             Plans & Pricing
           </Text>
-          <chakra.p mb={6} fontSize={['lg', 'xl']} color='gray.600' _dark={{ color: 'gray.400' }}>
+          <chakra.p mb={6} fontSize={['lg', 'xl']} color='gray.600' _dark={{ color: 'white' }}>
             5 minute installation · Try Team plan features for 14 days · No credit card required
           </chakra.p>
           <Flex justify='center' mx={['auto', 0]} mb={-2}>
