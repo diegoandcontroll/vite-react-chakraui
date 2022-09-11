@@ -20,7 +20,7 @@ import { cookies } from './utils/cookies';
 import { getNewToken } from './utils/refreshToken';
 import { onError } from '@apollo/client/link/error';
 const httpLink = createHttpLink({
-  uri: 'http://localhost:5000/graphql',
+  uri: 'http://ec2-54-163-148-184.compute-1.amazonaws.com:5000/graphql',
 });
 const authLink = setContext((_, { headers }) => {
   const token = cookies.get('auth.token');
