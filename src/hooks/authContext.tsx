@@ -71,7 +71,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const token = response.data.login.token;
       cookies.set('auth.token', token || '', { path: '/', maxAge: 60 * 60 * 24 * 30 });
       cookies.set('id.user', id, { path: '/', maxAge: 60 * 60 * 24 * 30 });
-
+      window.localStorage.setItem('user.name', name.toString());
+      window.localStorage.setItem('user.photoUrl', photoUrl.toString());
+      window.localStorage.setItem('user.id', id.toString());
+      window.localStorage.setItem('user.email', email.toString());
       setUser({
         id: id,
         name: name,

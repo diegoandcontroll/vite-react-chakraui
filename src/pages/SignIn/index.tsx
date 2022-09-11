@@ -1,21 +1,49 @@
 import { chakra, Flex, SimpleGrid, Image, Button, Input, FormLabel } from '@chakra-ui/react';
 
 import { useState } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
-import { useAuth } from '~/hooks/authContext';
+import { useLoginMutation } from '~/generated/graphql';
 
-export const SignIn = () => {
+import { cookies } from '~/utils/cookies';
+
+import { setLocalStorageItem } from '~/utils/localtorage';
+
+export const SignIn = ({ history }: RouteComponentProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { signIn } = useAuth();
+
+  const [login] = useLoginMutation();
+  async function handleSignIn(email: string, password: string) {
+    try {
+      const response = await login({
+        fetchPolicy: 'network-only',
+        variables: {
+          data: {
+            email,
+            password,
+          },
+        },
+      });
+
+      const { id, email: emailData, name, photoUrl } = response.data.login.user;
+      setLocalStorageItem('id', id);
+      setLocalStorageItem('email', emailData);
+      setLocalStorageItem('name', name);
+      setLocalStorageItem('photoUrl', photoUrl);
+      setLocalStorageItem('isLogged', 'ON');
+      cookies.set('auth.token', response.data.login.token);
+
+      window.location.href = '/profile';
+    } catch (error) {
+      history.push('/');
+      console.log(error);
+    }
+  }
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
     try {
-      await signIn({
-        emailData: email,
-        password,
-      });
-      window.location.href = '/profile';
+      await handleSignIn(email, password);
     } catch (e) {
       console.log(e);
     }

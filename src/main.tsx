@@ -10,20 +10,18 @@ import {
   ApolloLink,
   createHttpLink,
 } from '@apollo/client';
-
 import { setContext } from '@apollo/client/link/context';
-
 import App from './App';
 import { theme } from './styles/theme';
-import Cookies from 'universal-cookie';
-const cookies = new Cookies();
 import { AuthProvider } from './hooks/authContext';
+import { CookiesProvider } from 'react-cookie';
+import { cookies } from './utils/cookies';
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:5000/graphql',
 });
-const authLink = setContext((operation, { headers }) => {
-  const token: string = cookies.get('auth.token');
+const authLink = setContext((_, { headers }) => {
+  const token = cookies.get('auth.token');
   return {
     headers: {
       ...headers,
@@ -38,12 +36,14 @@ const client = new ApolloClient({
 });
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
-      <ChakraProvider theme={theme}>
-        <AuthProvider>
-          <App />
-        </AuthProvider>
-      </ChakraProvider>
-    </ApolloProvider>
+    <CookiesProvider>
+      <ApolloProvider client={client}>
+        <ChakraProvider theme={theme}>
+          <AuthProvider>
+            <App />
+          </AuthProvider>
+        </ChakraProvider>
+      </ApolloProvider>
+    </CookiesProvider>
   </React.StrictMode>,
 );
