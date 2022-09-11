@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 
 import {
@@ -21,6 +22,7 @@ import { Link } from 'react-router-dom';
 import LogoImg from '../../assets/logo.svg';
 
 import { cookies } from '~/utils/cookies';
+import { useUsersQuery } from '~/generated/graphql';
 export function Header() {
   const bg = useColorModeValue('gray.100', 'gray.800');
   const text = useColorModeValue('dark', 'light');
@@ -30,9 +32,17 @@ export function Header() {
   const isLogged = !!cookies.get('auth.token');
   const photoUrl = window.localStorage.getItem('photoUrl');
   const name = window.localStorage.getItem('name');
-
+  const idUser = window.localStorage.getItem('id');
+  const { data } = useUsersQuery({ fetchPolicy: 'cache-and-network' });
+  let photoUrlResponse: string;
+  data.users.map((item) => {
+    if (item.id === idUser) {
+      photoUrlResponse = item.photoUrl;
+    }
+  });
   function removeCookie() {
     window.localStorage.clear();
+    window.localStorage.setItem('chakra-ui-color-mode', 'dark');
     cookies.remove('auth.token');
     window.location.href = '/sign-in';
   }
@@ -119,7 +129,7 @@ export function Header() {
 
               {isLogged && (
                 <Link to='/profile'>
-                  <Avatar src={photoUrl} name={name} />
+                  <Avatar src={photoUrlResponse || photoUrl} name={name} />
                 </Link>
               )}
             </HStack>

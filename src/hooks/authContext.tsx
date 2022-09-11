@@ -106,10 +106,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
       email: email,
       photoUrl: photoUrl,
     });
-    window.localStorage.setItem('user.photoUrl', response.data.updateUser.photoUrl.toString());
-    window.localStorage.setItem('user.name', response.data.updateUser.name.toString());
-    window.localStorage.setItem('user.name', name.toString());
-    window.localStorage.setItem('user.photoUrl', photoUrl.toString());
+    window.localStorage.setItem('photoUrl', response.data.updateUser.photoUrl.toString());
+    window.localStorage.setItem('name', response.data.updateUser.name.toString());
+    window.localStorage.setItem('name', name.toString());
+    window.localStorage.setItem('photoUrl', photoUrl.toString());
   }
   async function refreshToken(oldToken: string) {
     const [refreshToken] = useRefreshTokenMutation();
