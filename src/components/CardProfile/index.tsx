@@ -1,5 +1,4 @@
-import React from 'react';
-import { Box, Flex, Image, Link, chakra, Icon } from '@chakra-ui/react';
+import { Box, Flex, Image, chakra, Icon } from '@chakra-ui/react';
 import { MdEmail } from 'react-icons/md';
 type CardProfileProps = {
   name: string;
