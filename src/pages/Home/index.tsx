@@ -9,8 +9,8 @@ import { useUsersQuery } from '~/generated/graphql';
 export const Home = () => {
   const { data, loading } = useUsersQuery({
     fetchPolicy: 'cache-and-network',
-
-    errorPolicy: 'none',
+    errorPolicy: 'ignore',
+    refetchWritePolicy: 'merge',
   });
   const [pageNumber, setPageNumber] = useState(0);
   const moviesPerPage = 3;
