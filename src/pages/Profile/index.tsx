@@ -16,6 +16,7 @@ export const Profile = ({ history }: RouteComponentProps) => {
       id: idUser,
     },
     fetchPolicy: 'cache-and-network',
+    errorPolicy: 'none',
   });
 
   if (error) {

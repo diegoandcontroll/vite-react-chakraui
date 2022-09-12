@@ -18,6 +18,7 @@ export const SignIn = ({ history }: RouteComponentProps) => {
     try {
       const response = await login({
         fetchPolicy: 'network-only',
+        errorPolicy: 'none',
         variables: {
           data: {
             email,

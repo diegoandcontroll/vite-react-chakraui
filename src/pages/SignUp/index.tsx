@@ -29,6 +29,8 @@ export const SignUp = ({ history }: RouteComponentProps) => {
     try {
       setLoading(true);
       const response = await createUser({
+        errorPolicy: 'none',
+        fetchPolicy: 'network-only',
         variables: {
           data: {
             email,

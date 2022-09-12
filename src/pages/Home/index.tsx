@@ -7,7 +7,11 @@ import 'src/styles/pagination.css';
 import { useUsersQuery } from '~/generated/graphql';
 
 export const Home = () => {
-  const { data, loading } = useUsersQuery({ fetchPolicy: 'cache-and-network' });
+  const { data, loading } = useUsersQuery({
+    fetchPolicy: 'cache-and-network',
+
+    errorPolicy: 'none',
+  });
   const [pageNumber, setPageNumber] = useState(0);
   const moviesPerPage = 3;
   const pagesVisited = pageNumber * moviesPerPage;
